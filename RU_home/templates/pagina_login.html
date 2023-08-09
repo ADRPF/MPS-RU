@@ -7,20 +7,20 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{% static '/pedidos/css/ver_pedido.css' %}">
-    <title>Restaurante Universitário - Ver Pedidos</title>
+    <title>Restaurante Universitário - Login</title>
 </head>
 <body>
-    <h1>Estou no ver pedido. Olá {{nome}}</h1>
+    <h1>Login</h1>
     <img src="{% static 'pedidos/img/happy.png' %}"><br>
-    <form action="{% url 'ver_pedidos' %}" method="POST">{% csrf_token %}
-        <input type="text" name="nome" placeholder="Digite seu nome">
+    <form action="{% url 'logar' %}" method="POST">{% csrf_token %}
+        <input type="text" name="nome" placeholder="Digite seu nome" required>
         <br>
-        <input type ="number" name="matricula" placeholder="Digite sua matrícula">
+        <input type ="password" name="senha" placeholder="Digite sua senha" required>
     <br>
     <br>
     <input type="submit" value="Enviar">
-    <button>Ok</button>
     </form>
+    <a href="../cadastro">Cadastrar</a>
 </body>
 </html>
 
