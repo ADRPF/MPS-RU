@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fazer Pedido</title>
+</head>
+<body>
+    <h1>Cardapio da Semana</h1>
+    <div class="Prato1">
+        <b>TESTE 1</b>
+        <b>VALOR : 1.99</b>
+        <form action="pedido/" method="POST">
+            {%csrf_token%}
+            <input type="text" name="prato-id" value="1010" hidden>
+            <input type="radio" name="Credito">
+            <input type="radio" name="Debito">
+            <input type="radio" name="pix">
+            <input type="submit" name="send"  value="pedir">
+        </form>
+    </div>
+</body>
+</html>

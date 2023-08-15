@@ -1,9 +1,31 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Pessoa
+from .models import Pedido
+from .models import Prato
+import datetime
 
 def ver_cardapio(request):
-    return HttpResponse('Estou no Cardápio')
+    return render(request, 'cardapio.html')
+
+def pedido(request):
+    if request.method == 'POST':
+        prato = Prato.objects.filter(request.method.POST.get('prato-id'))
+
+        valor = request.POST.get('valor')
+        formPag = 'cred'
+        senha = '1012'
+
+        if(Pedido.objects.filter(senha=senha)):
+            return HttpResponse("Pedido com senha repetida")
+
+        pedido = Pedido(valor=valor, senha=senha, formPag=formPag)
+        pedido.save()
+
+        #prato = Prato.objects.filter(nome='Teste 1')
+        return HttpResponse(pedido.numPedido)
+
+
 
 def logar(request):
     if request.method == 'POST':
