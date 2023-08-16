@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .models import Pessoa
 from .models import Pedido
 from .models import Prato
@@ -31,11 +35,11 @@ def logar(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
         senha = request.POST.get('senha')
-        print(nome, senha)
+        user = authenticate(request, username=nome, password=senha)
         pessoa = Pessoa.objects.filter(nome=nome, senha=senha)
-        if pessoa.exists():
-            print("Usuário Cadastrado")
-            return render(request, 'index.html')
+        if user is not None:
+            login(request, user)
+            return redirect('Feedback:ver_feedback')
         else:
             print("Não existe esse usuário")
     return render(request, 'pagina_login.html')
@@ -54,13 +58,16 @@ def cadastrar_aluno(request):
         pessoa = Pessoa(nome=nome, matricula=matricula, senha=senha)
         pessoas = Pessoa.objects.all()
         pessoas2 = Pessoa.objects.filter(nome=nome)
-        if pessoas2.exists():
-            print("Usuário já cadastrado")
-        else:
+
+        if not User.objects.filter(username=nome).exists():
+            user = User.objects.create_user(username=nome, password=senha)
+            user.save()
             print("Usuário cadastrado")
-        print(pessoas[0].matricula)
-        #print(pessoas)
-        pessoa.save()
-        #return HttpResponse(pessoas)
-        return render(request, 'pagina_login.html')
+            return render(request, 'pagina_login.html')
+        else:
+            print("Usuário já cadastrado")
+    return render(request, 'pagina_cadastro.html')
+def fazer_logout(request):
+    logout(request)
+    return redirect('logar')
 
