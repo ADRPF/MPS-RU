@@ -10,25 +10,26 @@ class Pessoa(models.Model):
 
 
 class Pedido(models.Model):
-    numPedido = models.BigAutoField(primary_key=True)
     horario = models.DateTimeField(auto_now=True)
     senha = models.CharField(max_length=100, default='Default')
-    formPag = models.CharField(max_length=10)
-    pedido = models.ForeignKey(to="Cardapio", on_delete=models.SET_NULL, null=True)
+    formPag = models.CharField(max_length=10, default='Default')
+    corpoAcadId = models.ForeignKey(to='Pessoa', on_delete=models.CASCADE, default=1)
     def __str__(self) -> str:
-        return self.senha
+        return str(self.senha) + 'pedido'
 
 
 class Cardapio(models.Model):
     dia = models.DateField()
     tipoRefeicao = models.CharField(max_length=10)
-    item = models.ForeignKey(to="Prato", on_delete=models.SET_NULL, null=True)
+    pedidoId = models.ForeignKey(to="Pedido", on_delete=models.CASCADE, default=1)
+    pratoId = models.ManyToManyRel(to='Prato', field=models.CASCADE)
+
+    def __str__(self):
+        return self.pk
 
 class Prato(models.Model):
-    pratoId = models.BigAutoField(primary_key=True)
-    nome = models.CharField(max_length=100)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    desc = models.CharField(max_length=1000)
+    nome = models.CharField(max_length=100, default="Teste")
+    desc = models.CharField(max_length=1000, default="Sem desc.")
 
     def __str__(self) -> str:
         return self.nome
